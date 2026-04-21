@@ -11,4 +11,13 @@
         <maven.compiler.target>17</maven.compiler.target>
         <exec.mainClass>com.mycompany.cropsmanagementsystem.CropsManagementSystem</exec.mainClass>
     </properties>
+    <dependencies>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.3</version>
+        </dependency>
+
+    </dependencies>
 </project>
