@@ -7,6 +7,9 @@ package rw.rab.cropDao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import rw.rab.model.Crop;
 
 /**
@@ -61,7 +64,6 @@ public class CropDao {
             pst.setInt(3, cropObj.getPrice());
             pst.setInt(4, cropObj.getId());
             
-            
                        
             //step3: execute statement
             int rowsAffected = pst.executeUpdate();
@@ -77,7 +79,70 @@ public class CropDao {
             return 0;
     }
         
-    // 
     
        }
+    //DELETE OPERATION
+    public Integer deleteCrop(int id) {
+        try {
+            // step1: create connection
+            Connection con = DriverManager.getConnection(jdbcUrl, dbUsername, dbPassword);
+
+            // step2: prepare statement
+            String sql = "DELETE FROM crops WHERE id = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+
+            pst.setInt(1, id);
+
+            // step3: execute statement
+            int rowsAffected = pst.executeUpdate();
+
+            // step4: close connection
+            con.close();
+
+            return rowsAffected;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return 0;
+        }
+    }
+    
+    //READ ALL
+    // READ ALL OPERATION
+    public List<Crop> findAllCrops() {
+        List<Crop> cropList = new ArrayList<>();
+
+        try {
+            // step1: create connection
+            Connection con = DriverManager.getConnection(jdbcUrl, dbUsername, dbPassword);
+
+            // step2: prepare statement
+            String sql = "SELECT * FROM crops";
+            PreparedStatement pst = con.prepareStatement(sql);
+
+            // step3: execute query
+            ResultSet rs = pst.executeQuery();
+
+            // step4: loop through result set
+            while (rs.next()) {
+                Crop cropObj = new Crop();
+
+                cropObj.setName(rs.getString("name"));
+                cropObj.setId(rs.getInt("id"));
+                cropObj.setLifespan(rs.getInt("lifespan"));
+                cropObj.setPrice(rs.getInt("price"));
+
+                cropList.add(cropObj);
+            }
+
+            // step5: close connection
+            con.close();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return cropList;
+    }
+    
  }
