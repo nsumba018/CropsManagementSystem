@@ -47,5 +47,37 @@ public class CropDao {
         }
     }
     
+    //UPDATE OPERATION
+    public Integer updateCrop(Crop cropObj){
+        //step0: surround anything with try and catch
+        try{
+            //step1: create a connection
+            Connection con = DriverManager.getConnection(jdbcUrl, dbUsername, dbPassword);
+            String sql = "UPDATE crops SET name = ?, lifespan = ?, price = ? WHERE id = ?";
+            //step2: preparedStatement
+            PreparedStatement pst= con.prepareStatement(sql);
+            pst.setString(1, cropObj.getName());
+            pst.setInt(3, cropObj.getLifespan());
+            pst.setInt(3, cropObj.getPrice());
+            pst.setInt(4, cropObj.getId());
+            
+            
+                       
+            //step3: execute statement
+            int rowsAffected = pst.executeUpdate();
+            
+            
+            //step4: close connection
+            con.close();
+            return rowsAffected;
+            
+        
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return 0;
+    }
+        
+    // 
     
-}
+       }
+ }
